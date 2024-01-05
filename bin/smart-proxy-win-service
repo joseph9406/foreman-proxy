@@ -1,0 +1,43 @@
+$LOAD_PATH.unshift(*Dir[File.expand_path("../lib", __dir__), File.expand_path("../modules", __dir__)])
+
+raise "win-service executable can only be used as a service in windows environment" unless RUBY_PLATFORM =~ /mingw/
+
+require 'rubygems'
+require 'bundler/setup'
+require 'win32/daemon'
+require 'smart_proxy_main'
+
+include Win32
+
+LOG_DIR_PATH = File.expand_path("../log", __dir__)
+Dir.mkdir(LOG_DIR_PATH) unless Dir.exist?(LOG_DIR_PATH)
+
+def log(a_msg)
+  File.open(File.expand_path("win-service.log", LOG_DIR_PATH), 'a') {|f| f.puts "%s %s" % [Time.now, a_msg] }
+end
+
+begin
+  class SmartDaemon < Daemon
+    def service_init
+      log("Service is initializing")
+    end
+
+    def service_main
+      log("Service is running")
+      # Start the foreman daemon
+      Proxy::Launcher.new.launch
+
+      # the daemon is about to exit.
+      log("Service is terminating")
+    end
+
+    def service_stop
+      log("Service is stopping.")
+    end
+  end
+
+  SmartDaemon.mainloop
+rescue Exception => e
+  log("Daemon failure: #{e}  #{e.backtrace.join("\n")}")
+  raise
+end

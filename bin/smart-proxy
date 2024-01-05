@@ -1,0 +1,14 @@
+#!/usr/bin/ruby
+
+#(1) $LOAD_PATH 是一个全局变量，它包含了 Ruby 解释器用于查找所需库文件的目录路径。
+#(2) unshift 将元素插入到 $LOAD_PATH (#LOAD_PATH 是一個數組) 的开头,
+#(3) Dir[...] Dir 类提供了一组方法，允许你获取目录中的文件列表、遍历目录、创建目录等操作。
+#    在此例中返回一個数组,其中的元素是了两个目录的絶對路徑。 '*'操作符将数组展开为参数列表。
+#    Dir[File.expand_path('../lib', __dir__), File.expand_path('../modules', __dir__)] 
+#    => ["/usr/share/foreman-proxy/lib", "/usr/share/foreman-proxy/modules"]
+#(4) __dir__ 是一个内置常量，表示当前文件所在的目录。
+#(5) File.expand_path('../lib', __dir__), 獲取 __dir__ + "../lib" 這個目錄的絶對目錄。
+$LOAD_PATH.unshift(*Dir[File.expand_path('../lib', __dir__), File.expand_path('../modules', __dir__)])
+
+require 'smart_proxy_main'
+Proxy::Launcher.new.launch

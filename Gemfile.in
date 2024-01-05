@@ -1,0 +1,16 @@
+#********************************* Gemfile.in 是什麼東西 *********************************************
+# 而 Gemfile.in 则类似于标准的 Gemfile，但它可能是一个定制化的 Gemfile 文件，可能包含一些特殊的需求或配置。
+# 这个文件的后缀名 .in 可能表示它是一个模板文件，它会在构建过程中被处理生成真正的 Gemfile。
+# 使用 Gemfile.in 的好处是，它可以根据不同的环境或配置生成不同的 Gemfile 文件，从而满足不同的依赖管理需求。
+#*****************************************************************************************************
+source 'https://rubygems.org'
+
+gemspec
+
+gem 'concurrent-ruby', '~> 1.0', require: 'concurrent'
+
+# File.join(__dir__, 'bundler.d', '*.rb'), 将 __dir__、'bundler.d' 和 '*.rb' 拼接在一起，形成了一个完整的目录路径。
+# Dir[...] 利用上述的路径字符串去查找满足该模式的所有文件,找到的文件将作为一个字符串数组返回，其中包含了所有满足 *.rb 模式的文件的文件名。
+Dir[File.join(__dir__, 'bundler.d', '*.rb')].each do |bundle|
+  instance_eval(Bundler.read_file(bundle)) 
+end

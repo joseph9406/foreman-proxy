@@ -1,0 +1,19 @@
+{
+	"folders": [
+		{
+			"path": "../../gems/gems/foreman_openscap-4.3.3"
+		},
+		{
+			"path": "../../gems/gems/foreman_scap_client-0.5.0"
+		},
+		{
+			"path": "../../gems/gems/smart_proxy_openscap-0.9.1"
+		},
+		{
+			"path": "../../foreman"
+		},
+		{
+			"path": ".."
+		}
+	]
+}

@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": "../../.."
+		},
+		{
+			"path": "../../../../foreman"
+		},
+		{
+			"path": "../../../../foreman-installer"
+		}
+	]
+}
